@@ -23,7 +23,7 @@ class Home extends Component{
     })
 
 
-    let mus={
+    let mus = {
       ct: 24,
       qqmusic_ver: 1298,
       new_json: 1,
