@@ -29,9 +29,7 @@ class Home extends Component{
       var mp3 = res.data.req_0.data.sip[0]+res.data.req_0.data.midurlinfo[0].purl;
       this.setState({audioSrc:mp3})
       this.textAudio.play();
-      
-      // var mp3 = new Audio(mp3);
-      // mp3.play();
+
     })
   }
   //获取歌曲名字
