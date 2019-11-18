@@ -26,9 +26,11 @@ class Home extends Component{
       data: {"req":{"module":"CDN.SrfCdnDispatchServer","method":"GetCdnDispatch","param":{"guid":"4300893668","calltype":0,"userip":""}},"req_0":{"module":"vkey.GetVkeyServer","method":"CgiGetVkey","param":{"guid":"4300893668","songmid":[mid],"songtype":[0],"uin":"1727986495","loginflag":1,"platform":"20"}},"comm":{"uin":1727986495,"format":"json","ct":24,"cv":0}}
     }
     audioFun(data).then(res=>{
-      var mp3 = res.data.req_0.data.sip[0]+res.data.req_0.data.midurlinfo[0].purl;
-      this.setState({audioSrc:mp3})
-      this.textAudio.play();
+      if(res.data.req_0.code==0){
+        var mp3 = res.data.req_0.data.sip[0]+res.data.req_0.data.midurlinfo[0].purl;
+        this.setState({audioSrc:mp3})
+        this.textAudio.play();
+      }
 
     })
   }
@@ -150,7 +152,7 @@ class Home extends Component{
 
      {tableData.length?<ul>
         {tableData.map((item,i)=>{
-          return <li style={ulLIStyle.li} key={i} onClick={this.getAudio.bind(this,item.songMID)}>{accuracy==1?item.songName:item.title}</li>
+          return <li style={ulLIStyle.li} key={i} onClick={this.getAudio.bind(this,item.songMID?item.songMID:item.mid)}>{accuracy==1?item.songName:item.title}</li>
         })}
       </ul>:<div>暂无数据</div>}
 
