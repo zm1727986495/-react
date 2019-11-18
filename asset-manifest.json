@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/qqMusic/static/css/main.0661df23.chunk.css",
+    "main.js": "/qqMusic/static/js/main.2f581949.chunk.js",
+    "main.js.map": "/qqMusic/static/js/main.2f581949.chunk.js.map",
+    "runtime-main.js": "/qqMusic/static/js/runtime-main.5573136d.js",
+    "runtime-main.js.map": "/qqMusic/static/js/runtime-main.5573136d.js.map",
+    "static/css/2.2d173e7a.chunk.css": "/qqMusic/static/css/2.2d173e7a.chunk.css",
+    "static/js/2.674a86f4.chunk.js": "/qqMusic/static/js/2.674a86f4.chunk.js",
+    "static/js/2.674a86f4.chunk.js.map": "/qqMusic/static/js/2.674a86f4.chunk.js.map",
+    "index.html": "/qqMusic/index.html",
+    "precache-manifest.2c5b02d3203c0ccd3067c8b0b0b15cc5.js": "/qqMusic/precache-manifest.2c5b02d3203c0ccd3067c8b0b0b15cc5.js",
+    "service-worker.js": "/qqMusic/service-worker.js",
+    "static/css/2.2d173e7a.chunk.css.map": "/qqMusic/static/css/2.2d173e7a.chunk.css.map",
+    "static/css/main.0661df23.chunk.css.map": "/qqMusic/static/css/main.0661df23.chunk.css.map",
+    "static/media/index.css": "/qqMusic/static/media/element-icons.d2f69a92.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5573136d.js",
+    "static/css/2.2d173e7a.chunk.css",
+    "static/js/2.674a86f4.chunk.js",
+    "static/css/main.0661df23.chunk.css",
+    "static/js/main.2f581949.chunk.js"
+  ]
+}
