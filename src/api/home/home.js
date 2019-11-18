@@ -23,3 +23,12 @@ export function search(params){
     params
   })
 }
+
+
+export function audioFun(params){
+  return fetch({
+    url:'/uqq/cgi-bin/musicu.fcg',
+    method: 'get',
+    params
+  })
+}
