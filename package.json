@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "version": "0.1.0",
-  "homepage":"https://zm1727986495.github.io/qqMusic",
+  "homepage":".",
   "private": true,
   "dependencies": {
     "@babel/core": "7.6.0",
