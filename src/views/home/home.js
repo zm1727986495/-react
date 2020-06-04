@@ -1,17 +1,33 @@
 import React, { Component } from 'react';
-import {listCustomerService,client_search_cp,search,audioFun} from '@api/home/home'
-import { Input,Button } from 'element-react';
+import {listCustomerService,client_search_cp,search,audioFun,common} from '@api/home/home'
+import { Input,Button,Message } from 'element-react';
 import 'element-theme-default';
 
 
 class Home extends Component{
   constructor(props) {
     super(props);
-    this.state = {tableData:[],inpVal:'',accuracy:'',innhtml:'',audioSrc:''};
+    this.state = {tableData:[],Deposit:[],inpVal:'',accuracy:'',innhtml:'',audioSrc:''};
+    this.getMisData()
   }
 
+  getMisData=()=>{
+    let data = {
+      source: 'pc',
+      weather_type: 'observe|forecast_1h|forecast_24h|index|alarm|limit|tips|rise',
+      province: '河北省',
+      city: '张家口',
+      county: '',
+      callback: 'jQuery1113024686955861497917_1575007313829',
+      _: 1575007313831,
+    }
+    common(data).then(res=>{
+      // console.log(res);
+      
+    })
+  }
   //点击歌名播放歌曲
-  getAudio=mid=>{
+  getAudio=(mid,name)=>{
     let data = {
       '-': 'getplaysongvkey8863583479930659',
       g_tk: 600087168,
@@ -23,35 +39,51 @@ class Home extends Component{
       notice: 0,
       platform: 'yqq.json',
       needNewCode: 0,
-      data: {"req":{"module":"CDN.SrfCdnDispatchServer","method":"GetCdnDispatch","param":{"guid":"4300893668","calltype":0,"userip":""}},"req_0":{"module":"vkey.GetVkeyServer","method":"CgiGetVkey","param":{"guid":"4300893668","songmid":[mid],"songtype":[0],"uin":"1727986495","loginflag":1,"platform":"20"}},"comm":{"uin":1727986495,"format":"json","ct":24,"cv":0}}
+      data: {"req":{"module":"CDN.SrfCdnDispatchServer","method":"GetCdnDispatch","param":{"guid":"4300893668","calltype":0,"userip":""}},"req_0":{"module":"vkey.GetVkeyServer","method":"CgiGetVkey","param":{"guid":"4300893668","songmid":[mid],"songtype":[0],"uin":"1608335773","loginflag":1,"platform":"20"}},"comm":{"uin":1608335773,"format":"json","ct":24,"cv":0}}
     }
     audioFun(data).then(res=>{
       if(res.data.req_0.code==0){
+        if(!res.data.req_0.data.midurlinfo[0].purl){
+          Message.error('当前歌曲需要vip！')
+          return
+        }
         var mp3 = res.data.req_0.data.sip[0]+res.data.req_0.data.midurlinfo[0].purl;
         this.setState({audioSrc:mp3})
         this.textAudio.play();
+        if(name){
+          let arr = this.state.Deposit;
+          let flag = arr.some(item=>{
+            return item.mid==mid
+          })
+          if(flag){
+            return
+          }
+          arr.push({mid,name})
+          this.setState({Deposit:arr})
+        }
+        
       }
 
     })
   }
   //获取歌曲名字
   getData=()=>{
-    let data = {
-      page: 1,
-      limit: 20
-    }
-    listCustomerService(data).then(res=>{
-      if(res.status == 200){
-        // this.setState({tableData:res.data.data.rows})
-      }
-    })
+    // let data = {
+    //   page: 1,
+    //   limit: 20
+    // }
+    // listCustomerService(data).then(res=>{
+    //   if(res.status == 200){
+    //     // this.setState({tableData:res.data.data.rows})
+    //   }
+    // })
 
 
     let mus = {
       ct: 24,
       qqmusic_ver: 1298,
       new_json: 1,
-      remoteplace: 'txt.yqq.song',
+      remoteplace: 'txt.yqq.song',//txt.yqq.lyric  歌词
       searchid: 59568499194168183,
       t: 0,
       aggr: 1,
@@ -63,7 +95,7 @@ class Home extends Component{
       n: 10,
       w: this.state.inpVal,
       g_tk: 5381,
-      loginUin: 0,
+      loginUin: 1727986495,
       hostUin: 0,
       format: 'json',
       inCharset: 'utf8',
@@ -100,7 +132,7 @@ class Home extends Component{
   //输入内容
   handelChange = val =>{
    this.setState({inpVal:val})
-  //  this.getSearch(val)
+   this.getSearch(val)
   }
 
   //输入内容调取接口
@@ -109,7 +141,7 @@ class Home extends Component{
       is_xml: 0,
       key:val,
       g_tk: 5381,
-      loginUin: 0,
+      loginUin: 1727986495,
       hostUin: 0,
       format: 'json',
       inCharset: 'utf8',
@@ -119,14 +151,22 @@ class Home extends Component{
       needNewCode: 0
     }
     search(data).then(res=>{
-      console.log(res);
-      
+      if(res.data.code==0){
+        console.log(res.data.data.song.itemlist);
+        this.setState({tableData:res.data.data.song.itemlist,accuracy:3})
+      }
     })
 
   }
 
+  onEndedFun=()=>{
+    let {Deposit} = this.state;
+    let s = Math.floor(Math.random()*Deposit.length);
+    this.getAudio(Deposit[s].mid)
+  }
+
   render(){
-    let {tableData=[],accuracy,innhtml,audioSrc} = this.state;
+    let {tableData=[],accuracy,innhtml,audioSrc,Deposit} = this.state;
     let ulLIStyle = {
       sear:{
         display:'flex',
@@ -152,12 +192,23 @@ class Home extends Component{
 
      {tableData.length?<ul>
         {tableData.map((item,i)=>{
-          return <li style={ulLIStyle.li} key={i} onClick={this.getAudio.bind(this,item.songMID?item.songMID:item.mid)}>{accuracy==1?item.songName:item.title}</li>
+          let name =accuracy==1?item.songName:(accuracy==2?item.title:item.name)
+          return <li style={ulLIStyle.li} key={i} onClick={this.getAudio.bind(this,item.songMID?item.songMID:item.mid,name)}>{name}</li>
         })}
       </ul>:<div>暂无数据</div>}
 
+
+      <div style={{marginTop:'30px'}}>
+        听过的音乐:
+        {Deposit.length?<ul>
+          {Deposit.map((item,i)=>{
+            return <li style={ulLIStyle.li} key={i} onClick={this.getAudio.bind(this,item.mid,null)}>{item.name}</li>
+          })}
+        </ul>:<div></div>}
+      </div>
+
       <div style={ulLIStyle.audioSty}>
-        <audio ref={audio => this.textAudio = audio} style={{width:'100%'}} src={audioSrc} controls="controls"></audio>
+        <audio onEnded={this.onEndedFun} ref={audio => this.textAudio = audio} style={{width:'100%'}} src={audioSrc} controls="controls"></audio>
       </div>
 
     </div>)

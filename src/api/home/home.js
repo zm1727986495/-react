@@ -32,3 +32,12 @@ export function audioFun(params){
     params
   })
 }
+
+
+export function common(params){
+  return fetch({
+    url:'/wis/weather/common',
+    method: 'get',
+    params
+  })
+}

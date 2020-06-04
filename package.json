@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "version": "0.1.0",
-  "homepage":".",
+  "homepage": "http://.",
   "private": true,
   "dependencies": {
     "@babel/core": "7.6.0",
@@ -143,5 +143,17 @@
   },
   "devDependencies": {
     "gh-pages": "^2.1.1"
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zm1727986495/-react.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zm1727986495/-react/issues"
   }
 }

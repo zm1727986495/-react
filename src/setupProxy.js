@@ -30,6 +30,16 @@ module.exports = function(app) {
       // cookieDomainRewrite: "http://localhost:3000"
    }));
 
+
+   app.use(proxy('/wis', { 
+      target: 'https://wis.qq.com' ,
+      secure: true,  // 是否是https
+      changeOrigin: true,
+      pathRewrite: {
+       "^/wis": ""
+      },
+   }));
+
    
 
 };
